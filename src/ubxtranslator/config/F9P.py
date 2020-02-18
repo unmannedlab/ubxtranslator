@@ -1,6 +1,6 @@
 """Predefined message classes"""
 
-from . import core
+from .. import core
 
 __all__ = ['ACK_CLS', 'NAV_CLS', ]
 
