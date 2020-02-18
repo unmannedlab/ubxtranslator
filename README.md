@@ -1,55 +1,21 @@
-# ubxtranslator [![Build Status](https://travis-ci.org/dalymople/ubxtranslator.svg?branch=master)](https://travis-ci.org/dalymople/ubxtranslator)
-
 ## Overview
-This module provides a simple way to decode messages from uBlox GPS devices in the UBX format. 
-Like the high accuracy NEO-M8U module that I have created, 
-<a href="https://www.tindie.com/products/dalymople/gps-dead-reckoning-board-neo-m8u-gnss">click here for more info.</a><br>
-<br>
-This package has no dependencies! This is written in pure python using only the standard lib and supports any
-standard byte stream. The predefined messages are not added to the parser by default, this allows
-you to have tight control over what messages can be parsed.
 
-Is this the fastest implementation of a UBX parser? Probably not. If speed is critical then you 
-probably need to go write something in C. If you want something that is fast enough
-and easy to use, you are in the right place. Keep reading.
-
-Supports Python 3.5 and up.
+This ROS package is an adaptation of the pure python3 module written by <a href="https://github.com/dalymople">dalymople.</a> 
+The package provides a simple a easy way to incorporate UBX modules such as the M8U or F9P in ROS projects. 
+The package has no python dependencies thanks to the work by dalymople and only depends on std_mgs and geometry_msgs in ROS.  
+The package can be reconfigured to new modules that have different message types.
 
 
 ## Quickstart
 
-Install the package with pip<br>
-`pip install ubxtranslator`
+Clone the package to your catkin workspace<br>
+`git clone https://github.com/unmannedlab/ubxtranslator.git`
 
-Import the core module<br>
-`from ubxtranslator import core`
+Use catkin to build the packages<br>
+`catkin build ubxtranslator`
 
-If the message class you want has already been defined simply import it. 
-If not you will need to construct the messages and classes yourself, see the examples for more information.<br>
-`from ubxtranslator import predefined`
+Start the ROS core service<br>
+`roscore`
 
-Construct the parser<br>
-```
-parser = core.Parser([
-  predefined.CLS_ACK, 
-  predefined.CLS_NAV
-])
-```
-
-Then you can use the parser to decode messages from any byte stream.<br>
-`cls_name, msg_name, payload = parser.receive_from(port)`
-
-The payload is the named tuple of the message<br>
-`print(cls_name, msg_name, payload.lat, payload.lng)`
-
-## Examples
-For full examples see the examples directory. 
-
-## TODO's
-Want to contribute? Please feel free to submit issues or pull requests. 
-Nothing in this package is very complicated, please have a crack and help me to improve this.
-
-- Add the ability to pack messages into packets for two way communications
-- Add more and better tests
-- Add Field type RU1_3
-- Add async support
+Launch the publisher<br>
+`roslaunch ubxtranslator ubx_publisher`
