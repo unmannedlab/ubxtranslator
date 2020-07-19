@@ -7,7 +7,9 @@ find_package( catkin REQUIRED COMPONENTS
               std_msgs 
               geometry_msgs)
 
-# Run setup.py
+##################
+## Run setup.py ##
+##################
 catkin_python_setup()
 
 ################################################

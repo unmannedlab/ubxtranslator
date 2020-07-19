@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """The core structure definitions"""
 
 import struct

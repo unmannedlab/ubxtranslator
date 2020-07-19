@@ -18,4 +18,4 @@ Start the ROS core service<br>
 `roscore`
 
 Launch the publisher<br>
-`roslaunch ubxtranslator ubx_publisher`
+`roslaunch ubxtranslator ubxtranslator.launch`

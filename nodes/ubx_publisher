@@ -14,7 +14,6 @@ class UBXNode:
 
         rospy.init_node('UBX')
 
-
         # Paramters
         self.port = serial.Serial("/dev/ArduSimple", baudrate=9600, timeout=0.1)
 
