@@ -15,18 +15,20 @@ class UBXNode:
         rospy.init_node('UBX')
 
         # Paramters
-        self.port = serial.Serial("/dev/ArduSimple", baudrate=9600, timeout=0.1)
+        self.port = serial.Serial("/dev/ArduSimple", baudrate=115200, timeout=0.1)
 
-        self.hpposllh_pub  = rospy.Publisher('UBX/hpposllh', hpposllh, queue_size=10)
         self.relpos2D_pub  = rospy.Publisher('UBX/relpos2D', relpos2D, queue_size=10)
+        self.hpposllh_pub  = rospy.Publisher('UBX/hpposllh', hpposllh, queue_size=10)
+        self.posllh_pub    = rospy.Publisher('UBX/posllh',   hpposllh, queue_size=10)
 
-        self.hpposllh = hpposllh()
         self.relpos2D = relpos2D()
+        self.hpposllh = hpposllh()
+        self.posllh   = hpposllh()
 
     def run(self):
 
         parser = Parser([ NAV_CLS, ACK_CLS ])
-        rate = rospy.Rate(10) # 10 Hz
+        rate = rospy.Rate(20) # 20 Hz
 
         while(not rospy.is_shutdown()):
             try:
@@ -56,6 +58,18 @@ class UBXNode:
                         self.hpposllh.err.height = float(msg[2][12])*1e-4
 
                         self.hpposllh_pub.publish( self.hpposllh )
+
+                elif msg[1] == "POSLLH":
+                    self.posllh.llh.lon    = float(msg[2][1])*1e-7 # Longituge
+                    self.posllh.llh.lat    = float(msg[2][2])*1e-7 # Latitude
+                    self.posllh.llh.height = float(msg[2][3])*1e-3 # Height
+
+                    self.posllh.err.lon    = float(msg[2][5])*1e-4
+                    self.posllh.err.lat    = float(msg[2][5])*1e-4
+                    self.posllh.err.height = float(msg[2][6])*1e-4
+
+                    self.posllh_pub.publish( self.posllh )
+
 
             except (ValueError, IOError) as err:
                 print(err)
